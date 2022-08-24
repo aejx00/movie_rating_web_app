@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="{% url 'display' %}">
+  <div class="mb-3">
+    <label for="searchAPI" class="form-label">
+      Enter your movie:
+    </label>
+    <input type="text" class="form-control" name="API" />
+  </div>
+  <button type="submit" class="btn btn-primary">
+    Search
+  </button>
+</form>
+</br></br></br></br>
+<h1 style="text-align:left">Trending Movies</h1>
+<!-- {{trending.results}} -->
+<div style="display: flex; flex-direction: row; flex-wrap: wrap">
+  {%for element in trending.results%}
+  {# Single Card Template:#}
+  <div class="card" style="width: 18rem; margin: 10px">
+    <a href="{% url 'details' element.id %}">
+      <img src="https://image.tmdb.org/t/p/w500{{element.poster_path}}" class="card-img-top">
+    </a>
+    <div class="card-body">
+      <div style="display: flex; flex-direction: row">
+        <h5 class="card-title">{{element.title}}</h5>
+        {# Colored cirlce:#}
+        <!-- <div style="
+              background: red;
+              width: 20px;
+              height: 20px;
+              margin-left: 10px;
+              border-radius: 50%;
+            "></div> -->
+      </div>
+      <!-- <p class="card-text">{{element.overview}}</p> -->
+      <h6 class="card-title">Release Date: {{element.release_date}}</h6>
+      <!-- <a href="/command/1/color" class="btn btn-primary">Rate Movie</a>
+      </br></br>
+      <a href="/command/1/delete" class="btn btn-primary">{{element.id}}</a> -->
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

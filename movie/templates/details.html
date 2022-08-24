@@ -1,0 +1,161 @@
+{% extends 'base_details.html' %}
+{% block content %}
+<!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+<h1 class="card-title">
+    <p style="font-weight: bold;"></p>{{API.title}} </p>
+</h1>
+
+<img src="https://image.tmdb.org/t/p/original{{API.backdrop_path}}" img
+    style='height: 100%; width: 100%; object-fit: contain; opacity:0.6;' />
+<h5 style="text-align:left; font-weight: bold;">{{API.overview}}</h5>
+<div style="display:inline-block;vertical-align:top;">
+    <img src="https://image.tmdb.org/t/p/w500{{API.poster_path}}" alt="img" />
+</div>
+<div style="display:inline-block;">
+    <p>
+    <h5 style="text-align:left; font-weight: bold; text-transform:uppercase;">{{API.tagline}}</h5></br>
+    <h3>Release Date: {{API.release_date}}</h3>
+    <h3>Runtime: {{API.runtime}}</h3>
+    <h3>Budget: {{API.budget}}</h3>
+    <h3>Revenue: {{API.revenue}}</h3>
+    <h3>Homepage: <a href="{{API.homepage}}">{{API.homepage}}</a></h3>
+
+    <button class="btn btn-info" onclick="toggle()">Reveal TMDB Rating</button>
+    </br></br>
+    <div id="hide_toggle" STYLE="display:none">
+        <h5><span class="stars" data-rating="{{API.vote_average}}" data-num-stars="5"></span> &nbsp;&nbsp;
+            {{API.vote_average}}</h5>
+    </div>
+    </br></br>
+    <div class="container">
+        {%for rating in user_reviews%}
+        {% if rating.author|stringformat:"s" == "drewz" %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>
+                            <strong>{{rating.author}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <!-- <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                <span class="float-right"><i
+                                        class="text-warning fa fa-star-half-o"></i></span>&nbsp;&nbsp;&nbsp; -->
+                            <span class="stars" data-rating="{{rating.rating}}" data-num-stars="5"></span>
+                            &nbsp;&nbsp;&nbsp;
+                            {{rating.rating}}
+
+                        </p>
+                        <div class="clearfix"></div>
+                        <p>{{rating.content}}</p>
+                        <p>
+                            <!-- <a class="float-right btn btn-outline-primary ml-2"> <i class="fa fa-reply"></i> Reply</a>
+                                <a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    </p>
+</div>
+
+
+
+
+
+<!-- <h5 class="card-title">{{API | pprint}}</h5> -->
+<div class="container">
+    {% if user_reviews %}
+    </br>
+    <h2 class="text-center">Other User Ratings</h2>
+    {% elif not user_reviews %}
+    {% endif %}
+    {%for rating in user_reviews%}
+    {% if not rating.author|stringformat:"s" == "drewz" %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <p>
+                        <strong>{{rating.author}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <!-- <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                        <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                        <span class="float-right"><i
+                                class="text-warning fa fa-star-half-o"></i></span>&nbsp;&nbsp;&nbsp; -->
+                        <span class="stars" data-rating="{{rating.rating}}" data-num-stars="5"></span>
+                        &nbsp;&nbsp;&nbsp;
+                        {{rating.rating}}
+
+                    </p>
+                    <div class="clearfix"></div>
+                    <p>{{rating.content}}</p>
+                    <p>
+                        <!-- <a class="float-right btn btn-outline-primary ml-2"> <i class="fa fa-reply"></i> Reply</a>
+                        <a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a> -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<!-- {%for rating in user_reviews%}
+<h3>{{rating.content}}</h3>
+<h3>{{rating.rating}}</h3>
+<h3>{{rating.movie_id}}</h3>
+<h3>{{rating.date_added}}</h3>
+</br>
+{% endfor %} -->
+</br></br>
+{% if user.is_authenticated %}
+<!-- <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+    <form id="algin-form">
+        <div class="form-group">
+            <h4>Rate and Comment</h4>
+            <label for="comment">Message</label>
+            <textarea name="msg" id="" msg cols="30" rows="5" class="form-control"
+                style="background-color: gray;"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating (1-10)</label>
+            <input type="float" name="movie_rating" id="movie_rating" class="form-control">
+        </div>
+        <div class="form-group">
+            <button type="button" id="post" class="btn" style="background-color: white;">Submit Comment</button>
+        </div>
+    </form>
+</div> -->
+
+<!-- {{user_reviews}} -->
+
+
+
+<div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+    <p class="card-text">
+        {% if error %}
+    <div class="alert alert-danger mt-3" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">
+            Submit Rating
+        </button>
+    </form>
+    </p>
+</div>
+{% endif %}
+
+
+{% endblock content %}
